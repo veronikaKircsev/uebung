@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="lab3-websocket" />
+        <module name="lab3-rest-hateoas-licensing-service" />
+        <module name="lab3-rest-course-tracker-service" />
+        <module name="lab3-rest-mongodb-service" />
+        <module name="lab3-websocket-message" />
+        <module name="lab3-rest-patient-service" />
+        <module name="lab3-rest-openapi-book-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="lab3-rest-course-tracker-service" target="17" />
+      <module name="lab3-rest-hateoas-licensing-service" target="17" />
+      <module name="lab3-rest-mongodb-service" target="17" />
+      <module name="lab3-rest-openapi-book-service" target="17" />
+      <module name="lab3-rest-patient-service" target="17" />
+      <module name="lab3-websocket" target="17" />
+      <module name="lab3-websocket-message" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="lab3-rest-course-tracker-service" options="-parameters" />
+      <module name="lab3-rest-hateoas-licensing-service" options="-parameters" />
+      <module name="lab3-rest-mongodb-service" options="-parameters" />
+      <module name="lab3-rest-openapi-book-service" options="-parameters" />
+      <module name="lab3-rest-patient-service" options="-parameters" />
+      <module name="lab3-websocket" options="-parameters" />
+      <module name="lab3-websocket-message" options="-parameters" />
+    </option>
+  </component>
+</project>

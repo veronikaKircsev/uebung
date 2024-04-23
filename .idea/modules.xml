@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/lab3-rest-course-tracker-service/lab3-rest-course-tracker-service.iml" filepath="$PROJECT_DIR$/lab3-rest-course-tracker-service/lab3-rest-course-tracker-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab3-rest-hateoas-licensing-service/lab3-rest-hateoas-licensing-service.iml" filepath="$PROJECT_DIR$/lab3-rest-hateoas-licensing-service/lab3-rest-hateoas-licensing-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab3-rest-mongodb-service/lab3-rest-mongodb-service.iml" filepath="$PROJECT_DIR$/lab3-rest-mongodb-service/lab3-rest-mongodb-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab3-rest-openapi-book-service/lab3-rest-openapi-book-service.iml" filepath="$PROJECT_DIR$/lab3-rest-openapi-book-service/lab3-rest-openapi-book-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab3-rest-patient-service/lab3-rest-patient-service.iml" filepath="$PROJECT_DIR$/lab3-rest-patient-service/lab3-rest-patient-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/lab3-spring-rest-data-main.iml" filepath="$PROJECT_DIR$/.idea/lab3-spring-rest-data-main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab3-websocket-chat/lab3-websocket.iml" filepath="$PROJECT_DIR$/lab3-websocket-chat/lab3-websocket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab3-websocket-message/lab3-websocket-message.iml" filepath="$PROJECT_DIR$/lab3-websocket-message/lab3-websocket-message.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,1 @@
+GET Request: http://localhost:8080/v1/organization/1/license/1
