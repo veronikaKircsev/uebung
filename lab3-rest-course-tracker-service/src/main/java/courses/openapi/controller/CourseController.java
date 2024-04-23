@@ -1,30 +1,28 @@
 package courses.openapi.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 
+import courses.openapi.model.CourseRef;
 import courses.openapi.service.CourseService;
 import jakarta.validation.Valid;
 import courses.openapi.model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping("/courses/")
 @Tag(name = "Course Controller", description = "This REST controller provide services to manage courses in the Course Tracker application")
-public class CourseController {
+public class  CourseController {
 	
 	private CourseService courseService;
 	
@@ -46,7 +44,24 @@ public class CourseController {
 	public Optional<Course> getCourseById(@PathVariable("id") long courseId) {
 		return courseService.getCourseById(courseId);
 	}
-	
+	@RequestMapping(value="finde/{id}",method = RequestMethod.GET)
+	public ResponseEntity<CourseRef> getCourseLink(@PathVariable("id") long courseId){
+		Optional<Course> optionalCourse = courseService.getCourseById(courseId);
+		if (optionalCourse.isPresent()) {
+			Course course = optionalCourse.get();
+			CourseRef courseRef = new CourseRef();
+			courseRef.setId(course.getId());
+			courseRef.setCategory(course.getCategory());
+			courseRef.setName(course.getName());
+			courseRef.setDescription(course.getDescription());
+			courseRef.setRating(course.getRating());
+			courseRef.add(linkTo(methodOn(CourseController.class).getCourseLink(courseId)).withSelfRel());
+			return ResponseEntity.ok(courseRef);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+
+	}
 	@GetMapping("category/{name}")
 	@ResponseStatus(code = HttpStatus.OK)
 	@Operation(summary = "Provides course details for the supplied course category from the Course Tracker application")

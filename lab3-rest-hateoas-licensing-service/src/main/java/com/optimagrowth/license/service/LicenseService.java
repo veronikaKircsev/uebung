@@ -70,7 +70,7 @@ public class LicenseService {
 		if(!StringUtils.isEmpty(license)) {
 			license.setOrganizationId(organizationId);
 			for (License l : licenses){
-				if (l.getOrganizationId().equals(license.getOrganizationId()))
+				if (l.getOrganizationId().equals(organizationId))
 				l = license;
 			}
 			responseMessage = String.format(messages.getMessage("license.update.message", null, null), license);
@@ -81,6 +81,10 @@ public class LicenseService {
 
 	public String deleteLicense(String licenseId, String organizationId){
 		String responseMessage;
+		for (License l : licenses){
+			if (l.getOrganizationId().equals(organizationId))
+				licenses.remove(l);
+		}
 		responseMessage = String.format(messages.getMessage("license.delete.message", null, null),licenseId, organizationId);
 		return responseMessage;
 

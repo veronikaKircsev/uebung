@@ -38,7 +38,7 @@ public class LicenseController {
 				// that let you fake a method invocation on the controller.
 				// The returned LinkBuilder will have inspected the controller method’s mapping annotation
 				// to build up exactly the URI to which the method is mapped.
-				//The call to withSelfRel() creates a Link instance that you add to the Greeting representation model.
+				//The call to withSelfRel() creates a Link instance that you add to the License representation model.
 				//The "self" relation indicates that the link represents the resource itself.
 				// It's commonly used to provide clients with the URL to access the resource
 				linkTo(methodOn(LicenseController.class).getLicense(organizationId, license.getLicenseId())).withSelfRel(),
