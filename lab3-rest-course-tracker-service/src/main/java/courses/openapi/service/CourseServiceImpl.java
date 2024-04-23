@@ -6,12 +6,16 @@ import courses.openapi.exception.CourseNotFoundException;
 import courses.openapi.model.Course;
 import courses.openapi.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CourseServiceImpl implements CourseService {
 	
 	private CourseRepository courseRepository;
+
+	@Autowired
+	MessageSource messages;
 	
 	@Autowired
 	public CourseServiceImpl(CourseRepository courseRepository) {
@@ -70,6 +74,14 @@ public class CourseServiceImpl implements CourseService {
 			courseRepository.deleteById(courseId);
 		}
 		throw new CourseNotFoundException(String.format("No course with id %s is available", courseId));
+	}
+
+	@Override
+	public String deleteCourse(long licenseId){
+		String responseMessage;
+		deleteCourseById(licenseId);
+		responseMessage = String.format(messages.getMessage("license.delete.message", null, null),licenseId);
+		return responseMessage;
 	}
 
 }

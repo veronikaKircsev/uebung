@@ -1,5 +1,6 @@
 package courses.openapi.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import courses.openapi.service.CourseService;
 import jakarta.validation.Valid;
 import courses.openapi.model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,14 +39,38 @@ public class  CourseController {
 	public Iterable<Course> getAllCourses() {
 		return courseService.getCourses();
 	}
-	
+
+	@RequestMapping(value="find",method = RequestMethod.GET)
+	public ResponseEntity<CollectionModel<CourseRef>> getCourseLinks(){
+		Iterable<Course> optionalCourses = courseService.getCourses();
+		List<CourseRef> courses = new ArrayList<>();
+		if (optionalCourses!=null) {
+			for (Course course : optionalCourses){
+			CourseRef courseRef = new CourseRef();
+			courseRef.setId(course.getId());
+			courseRef.setCategory(course.getCategory());
+			courseRef.setName(course.getName());
+			courseRef.setDescription(course.getDescription());
+			courseRef.setRating(course.getRating());
+			courseRef.add(linkTo(methodOn(CourseController.class).getCourseLink(course.getId())).withSelfRel());
+			courses.add(courseRef);
+			}
+			CollectionModel<CourseRef> courseModel = CollectionModel.of(courses);
+			return ResponseEntity.ok(courseModel);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+
+	}
+
 	@GetMapping("{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	@Operation(summary = "Provides course details for the supplied course id from the Course Tracker application")
 	public Optional<Course> getCourseById(@PathVariable("id") long courseId) {
 		return courseService.getCourseById(courseId);
 	}
-	@RequestMapping(value="finde/{id}",method = RequestMethod.GET)
+
+	@RequestMapping(value="find/{id}",method = RequestMethod.GET)
 	public ResponseEntity<CourseRef> getCourseLink(@PathVariable("id") long courseId){
 		Optional<Course> optionalCourse = courseService.getCourseById(courseId);
 		if (optionalCourse.isPresent()) {
@@ -55,7 +81,11 @@ public class  CourseController {
 			courseRef.setName(course.getName());
 			courseRef.setDescription(course.getDescription());
 			courseRef.setRating(course.getRating());
-			courseRef.add(linkTo(methodOn(CourseController.class).getCourseLink(courseId)).withSelfRel());
+			courseRef.add(
+					linkTo(methodOn(CourseController.class).getCourseLink(courseId)).withSelfRel(),
+					linkTo(methodOn(CourseController.class).updateCourse(courseId, course)).withRel("updateCourse"),
+					linkTo(methodOn(CourseController.class).deleteCourseById(courseId)).withRel("deleteCourse")
+					);
 			return ResponseEntity.ok(courseRef);
 		} else {
 			return ResponseEntity.notFound().build();
@@ -68,6 +98,29 @@ public class  CourseController {
 	public Iterable<Course> getCourseByCategory(@PathVariable("name") String category) {
 		return courseService.getCoursesByCategory(category);
 	}
+
+	@RequestMapping(value="find/category/{name}",method = RequestMethod.GET)
+	public ResponseEntity<CollectionModel<CourseRef>> getCourseLinks(@PathVariable("name") String category){
+		Iterable<Course> optionalCourses = courseService.getCoursesByCategory(category);
+		List<CourseRef> courses = new ArrayList<>();
+		if (optionalCourses!=null) {
+			for (Course course : optionalCourses){
+				CourseRef courseRef = new CourseRef();
+				courseRef.setId(course.getId());
+				courseRef.setCategory(course.getCategory());
+				courseRef.setName(course.getName());
+				courseRef.setDescription(course.getDescription());
+				courseRef.setRating(course.getRating());
+				courseRef.add(linkTo(methodOn(CourseController.class).getCourseLink(course.getId())).withSelfRel());
+				courses.add(courseRef);
+			}
+			CollectionModel<CourseRef> courseModel = CollectionModel.of(courses);
+			return ResponseEntity.ok(courseModel);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+
+	}
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
@@ -79,21 +132,21 @@ public class  CourseController {
 	@PutMapping("{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@Operation(summary = "Updates the course details in the Course Tracker application for the supplied course id")
-	public void updateCourse(@PathVariable("id") long courseId, @Valid @RequestBody Course course) {
-		courseService.updateCourse(courseId, course);
+	public Course updateCourse(@PathVariable("id") long courseId, @Valid @RequestBody Course course) {
+		return courseService.updateCourse(courseId, course);
 	}
 	
 	@DeleteMapping("{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@Operation(summary = "Deletes the course details for the supplied course id from the Course Tracker application")
-	void deleteCourseById(@PathVariable("id") long courseId) {
-		courseService.deleteCourseById(courseId);
+	public ResponseEntity<String> deleteCourseById(@PathVariable("id") long courseId) {
+		return ResponseEntity.ok(courseService.deleteCourse(courseId));
 	}
 	
 	@DeleteMapping
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@Operation(summary = "Deletes all courses from the Course Tracker application")
-	void deleteCourses() {
+	public void deleteCourses() {
 		courseService.deleteCourses();
 	}
 

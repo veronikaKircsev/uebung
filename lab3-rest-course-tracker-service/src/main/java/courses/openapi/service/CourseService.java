@@ -19,4 +19,7 @@ public interface CourseService {
 	void deleteCourseById(long courseId);
 
 	void deleteCourses();
+
+	String deleteCourse(long courseId);
+
 }
